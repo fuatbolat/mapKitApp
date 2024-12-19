@@ -16,6 +16,9 @@ class MapsViewController: UIViewController ,MKMapViewDelegate ,CLLocationManager
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var notesTextField: UITextField!
     
+    var selectedName = ""
+    var selectedID : UUID?
+    
     var selectedLatitude = Double()
     var selectedLongitude = Double()
     var locationManager = CLLocationManager()
@@ -32,6 +35,16 @@ class MapsViewController: UIViewController ,MKMapViewDelegate ,CLLocationManager
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(selectLocation(gestureRecognizer:)))
         gestureRecognizer.minimumPressDuration = 3
         mapView.addGestureRecognizer(gestureRecognizer)
+        
+        if selectedName != "" {
+            if let uuidString = selectedID?.uuidString {
+                print(uuidString)
+            }
+            
+        }
+        else{
+            
+        }
     }
     
     @objc func selectLocation(gestureRecognizer : UILongPressGestureRecognizer){
@@ -84,7 +97,7 @@ class MapsViewController: UIViewController ,MKMapViewDelegate ,CLLocationManager
             print("error")
         }
         
-        NotificationCenter.default.post(name: NSNotification.Name("alertforrealoaddata"), object: nil)
+        
         
         
     }

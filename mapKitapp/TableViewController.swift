@@ -13,6 +13,8 @@ class TableViewController: UIViewController ,UITableViewDelegate,UITableViewData
     @IBOutlet weak var tableView: UITableView!
     var nameArr = [String]()
     var idArr = [UUID]()
+    var secilenName = ""
+    var secilenID : UUID?
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
@@ -25,13 +27,7 @@ class TableViewController: UIViewController ,UITableViewDelegate,UITableViewData
         // Do any additional setup after loading the view.
     }
     
-   /* override func viewWillAppear(_ animated: Bool) {
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadDta), name: NSNotification.Name(rawValue:"alertforrealoaddata"), object: nil)
-    }
-    @objc func reloadDta(){
-        tableView.reloadData()
-    }
-    */
+  
     func takeData(){
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
@@ -61,6 +57,7 @@ class TableViewController: UIViewController ,UITableViewDelegate,UITableViewData
     
     
     @objc func addItemPressed(){
+        secilenName = ""
         performSegue(withIdentifier: "gotToMaps", sender: nil)
     }
     
@@ -73,7 +70,18 @@ class TableViewController: UIViewController ,UITableViewDelegate,UITableViewData
         cell.textLabel?.text = nameArr[indexPath.row]
         return cell
     }
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        secilenName = nameArr[indexPath.row]
+        secilenID = idArr[indexPath.row]
+        performSegue(withIdentifier: "gotToMaps", sender: nil)
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "gotToMaps"{
+            let destinationVC = segue.destination as! MapsViewController
+            destinationVC.selectedName = secilenName
+            destinationVC.selectedID = secilenID
+        }
+    }
 
     
 
